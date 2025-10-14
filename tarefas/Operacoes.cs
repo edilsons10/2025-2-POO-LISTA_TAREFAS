@@ -1,5 +1,8 @@
-public class  Operacoes{
-    private string connectionString ="";
+using Mysql.Data.MySqlClient;
+
+public class  Operacoes
+{
+    private string connectionString ="server=phpmyadmin.uni9.marize.us;USER ID=user_poo;password=S3nh4!F0rt3;database=user_poo;";
     public int criar (Tarefa tarefa)
     {
         using(var conexao= new MySqlConnction(connectionString))
