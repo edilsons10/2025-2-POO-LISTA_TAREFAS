@@ -64,13 +64,47 @@ public class Operacoes
         return tarefas;
     }
 
-    public void Alterar(Tarefa tarefa)
+  public void Alterar(Tarefa tarefa)
     {
+        using (var conexao = new MySqlConnection(connectionString))
+    {
+        conexao.Open();
 
+        string sql = @"UPDATE tarefa 
+                       SET nome = @nome,
+                           descricao = @descricao,
+                           dataCriacao = @dataCriacao,
+                           dataExecucao = @dataExecucao,
+                           status = @status
+                       WHERE id = @id;";
+
+        using (var cmd = new MySqlCommand(sql, conexao))
+        {
+            cmd.Parameters.AddWithValue("@id", tarefa.Id);
+            cmd.Parameters.AddWithValue("@nome", tarefa.Nome);
+            cmd.Parameters.AddWithValue("@descricao", tarefa.Descricao);
+            cmd.Parameters.AddWithValue("@dataCriacao", tarefa.DataCriacao);
+            cmd.Parameters.AddWithValue("@dataExecucao", tarefa.DataExecucao);
+            cmd.Parameters.AddWithValue("@status", tarefa.Status);
+
+            cmd.ExecuteNonQuery(); // Executa o UPDATE sem retorno
+        }
+    }
     }
 
     public void Excluir(int id)
     {
+        using (var conexao = new MySqlConnection(connectionString))
+        {
+            conexao.Open();
 
+            string sql = "DELETE FROM tarefa WHERE id = @id;";
+
+            using (var cmd = new MySqlCommand(sql, conexao))
+            {
+                cmd.Parameters.AddWithValue("@id", id);
+                cmd.ExecuteNonQuery(); // Executa o DELETE sem retorno
+            }
+        }
     }
 }
